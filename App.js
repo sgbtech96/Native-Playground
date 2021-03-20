@@ -11,8 +11,7 @@ import Login from "./src/screens/Login";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export const AuthContext = createContext();
+import { AuthContext } from "./src/contexts/AuthContext";
 
 const reducer = (prevState, action) => {
   switch (action.type) {
@@ -74,14 +73,14 @@ export default function App() {
     initializeExpoFonts();
   }, []);
 
-  const authContext = () => ({
+  const authContext = {
     signIn: async (data) => {
       dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
     },
     signOut: () => {
       dispatch({ type: "SIGN_OUT" });
     },
-  });
+  };
 
   const RootStack = createStackNavigator();
 

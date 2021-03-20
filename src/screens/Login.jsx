@@ -9,11 +9,10 @@ import {
   Button,
   Text,
 } from "native-base";
-import { AuthContext } from "../../App";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
-  const AuthContext = useContext(AuthContext);
-  console.warn(AuthContext);
+  const { signIn } = useContext(AuthContext);
   return (
     <Container>
       <Header>
