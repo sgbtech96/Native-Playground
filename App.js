@@ -1,5 +1,5 @@
 import { Spinner } from "native-base";
-import React, { useEffect, useReducer, useMemo, createContext } from "react";
+import React, { useEffect, useReducer, useMemo } from "react";
 import { StyleSheet } from "react-native";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";

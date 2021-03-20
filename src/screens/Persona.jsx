@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Image } from "react-native";
 import {
   createDrawerNavigator,
   useIsDrawerOpen,
@@ -16,6 +16,8 @@ import {
   Icon,
   Right,
 } from "native-base";
+import * as ImagePicker from "expo-image-picker";
+import * as Sharing from "expo-sharing";
 
 const Persona = () => {
   const PersonaDrawer = createDrawerNavigator();
@@ -45,28 +47,59 @@ const Persona = () => {
     </Container>
   );
 
-  const EditProfile = ({ navigation }) => (
-    <Container>
-      <Header>
-        <Left>
-          <Button transparent onPress={() => navigation.toggleDrawer()}>
-            <Icon name="menu" />
+  const EditProfile = ({ navigation }) => {
+    const [url, setUrl] = useState(null);
+    let openImagePickerAsync = async () => {
+      let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (permissionResult.granted === false) {
+        alert("Permission to access camera roll is required!");
+        return;
+      }
+
+      let pickerResult = await ImagePicker.launchImageLibraryAsync();
+
+      setUrl(pickerResult.uri);
+    };
+
+    let openShareDialogAsync = async () => {
+      if (!(await Sharing.isAvailableAsync())) {
+        alert(`Uh oh, sharing isn't available on your platform`);
+        return;
+      }
+
+      await Sharing.shareAsync(url);
+    };
+    return (
+      <Container>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => navigation.toggleDrawer()}>
+              <Icon name="menu" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Edit Profile</Title>
+          </Body>
+          <Right>
+            <Button transparent onPress={() => navigation.goBack()}>
+              <Text>BACK</Text>
+            </Button>
+          </Right>
+        </Header>
+        <Content padder>
+          <Text>Edit Profile screen!</Text>
+          <Image source={{ uri: url }} style={styles.image} />
+          <Button onPress={openImagePickerAsync}>
+            <Text>Pick an Image</Text>
           </Button>
-        </Left>
-        <Body>
-          <Title>Edit Profile</Title>
-        </Body>
-        <Right>
-          <Button transparent onPress={() => navigation.goBack()}>
-            <Text>BACK</Text>
+          <Button onPress={openShareDialogAsync}>
+            <Text>Share the Image</Text>
           </Button>
-        </Right>
-      </Header>
-      <Content padder>
-        <Text>Edit Profile screen!</Text>
-      </Content>
-    </Container>
-  );
+        </Content>
+      </Container>
+    );
+  };
 
   return (
     <PersonaDrawer.Navigator initialRouteName="View Profile">
@@ -78,4 +111,9 @@ const Persona = () => {
 
 export default Persona;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  image: {
+    height: 220,
+    width: 240,
+  },
+});

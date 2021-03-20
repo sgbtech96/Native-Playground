@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { StyleSheet } from "react-native";
+import React, { useContext, useState } from "react";
+import { StyleSheet, Platform } from "react-native";
 import {
   Container,
   Header,
@@ -13,6 +13,7 @@ import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
   const { signIn } = useContext(AuthContext);
+  const [showInfo, setShowInfo] = useState(false);
   return (
     <Container>
       <Header>
@@ -24,6 +25,14 @@ const Login = () => {
         <Button onPress={() => signIn()}>
           <Text>Login</Text>
         </Button>
+        <Button onPress={() => setShowInfo(true)}>
+          <Text>Get device OS info</Text>
+        </Button>
+        {showInfo && (
+          <Text>
+            {Platform.OS} {Platform.Version}
+          </Text>
+        )}
       </Content>
     </Container>
   );
