@@ -1,5 +1,5 @@
 import { Spinner } from "native-base";
-import React, { useEffect, useReducer, useMemo } from "react";
+import React, { useEffect, useReducer, useMemo, useCallback } from "react";
 import { StyleSheet } from "react-native";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
@@ -73,14 +73,17 @@ export default function App() {
     initializeExpoFonts();
   }, []);
 
-  const authContext = {
-    signIn: async (data) => {
-      dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
-    },
-    signOut: () => {
-      dispatch({ type: "SIGN_OUT" });
-    },
-  };
+  const authContext = useMemo(
+    () => ({
+      signIn: async (data) => {
+        dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
+      },
+      signOut: () => {
+        dispatch({ type: "SIGN_OUT" });
+      },
+    }),
+    []
+  );
 
   const RootStack = createStackNavigator();
 

@@ -47,7 +47,16 @@ const Splash = ({ navigation }) => {
         <Button onPress={() => navigation.navigate("Dashboard")}>
           <Text>Go to Dashboard</Text>
         </Button>
-        <Button onPress={() => navigation.navigate("Details")}>
+        <Button
+          onPress={() =>
+            navigation.navigate("Details", {
+              screen: "Todos",
+              params: {
+                text: "random text here...",
+              },
+            })
+          }
+        >
           <Text>Go to Details</Text>
         </Button>
         <Button onPress={() => navigation.navigate("Persona")}>

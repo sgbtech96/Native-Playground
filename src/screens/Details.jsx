@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   Container,
@@ -42,7 +42,18 @@ const Balance = ({ navigation }) => {
   );
 };
 
-const Todos = ({ navigation }) => {
+const people = [
+  { name: "shaun", id: "1" },
+  { name: "yoshi", id: "2" },
+  { name: "mario", id: "3" },
+  { name: "luigi", id: "4" },
+  { name: "peach", id: "5" },
+  { name: "toad", id: "6" },
+  { name: "bowser", id: "7" },
+];
+
+const Todos = ({ route, navigation }) => {
+  const randomText = route.params?.text;
   useEffect(() => {
     console.warn("Todos mounted!");
     return () => {
@@ -62,10 +73,20 @@ const Todos = ({ navigation }) => {
         </Body>
       </Header>
       <Content padder>
-        <Text>Todos Screen</Text>
+        <Text>Todos Screen {randomText}</Text>
         <Button onPress={() => navigation.navigate("Dashboard")}>
           <Text>Go to Dashboard Screen</Text>
         </Button>
+        <FlatList
+          numColumns={2}
+          keyExtractor={(item) => item.id}
+          data={people}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => console.warn(item.id)}>
+              <Text style={styles.item}>{item.name}</Text>
+            </TouchableOpacity>
+          )}
+        />
       </Content>
     </Container>
   );
@@ -118,4 +139,11 @@ const Details = () => {
 
 export default Details;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  item: {
+    padding: 24,
+    backgroundColor: "#aaa",
+    color: "#fff",
+    fontSize: 32
+  },
+});
